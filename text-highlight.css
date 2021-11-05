@@ -1,0 +1,26 @@
+.text-higlight {
+  white-space: pre-wrap; /* important for proper line breaks */
+}
+
+.text-higlight__match {
+  display: inline-block;
+  white-space: nowrap;
+  position: relative;
+}
+
+.text-higlight__label-list {
+  position: absolute;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  left: 0;
+  right: 0;
+  top: 100%;
+}
+
+.text-higlight__label {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 100%;
+  display: block;
+}

@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "name": "text-highlight",
+  "scripts": {
+    "start": "http-server"
+  },
+  "devDependencies": {
+    "http-server": "^14.0.0"
+  }
+}

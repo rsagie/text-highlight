@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text Highlight</title>
+  <style>
+    .demo-container {
+      border: 1px dashed #ccc;
+      margin: 25px;
+      padding: 25px;
+    }
+  </style>
+  <link rel="stylesheet" href="./text-highlight.css">
+</head>
+<body>
+
+  <script type="module">
+    import TextHighlight from './text-highlight.js';
+
+    const tests = [
+      {
+        input: "Today, I am sharing Microsoft’s 2021 Diversity and Inclusion report, our third annual report and our eighth year of releasing our global workforce demographic data publicly. This past year was a challenging time for so many people, communities and organizations. Ongoing acts of hate and violence in the U.S. and around the world have continued to move racial injustice to the forefront of social consciousness, while the global pandemic has exacerbated inequities and upended our lives. In the face of these realities, the sense of urgency to solve some of the biggest systemic problems of equality and inclusion is palpable. This report is an opportunity for us to quantify the impact of our work. Measurement and data are important to us, not only because they allow us to recognizing progress, but also because it enables us to identify avenues and opportunities to do better. And while numbers provide an important and necessary snapshot, we also prioritize the perspectives and experiences of the more than 180,000 employees who bring their unique talents to our family of Microsoft companies. In addition to the data and progress you see in the document, we are also sharing five videos that explore the strategy and the intent behind the work we do, and the people who bring it to life.",
+        highlight: [
+          {
+            textRange: [20, 67],
+            textStyle: 'background: #afa',
+            labels: [
+              {
+                labelStyle: 'background: #efe',
+                labelText: 'Main article title',
+              }
+            ]
+          },
+          {
+            textRange: [101, 112],
+            textStyle: 'background: #faa',
+            labels: [
+              {
+                labelStyle: 'background: #fdd',
+                labelText: 'DATE',
+              },
+              {
+                labelStyle: 'background: #fee',
+                labelText: 'Long text here',
+              }
+            ]
+          },
+          {
+            textRange: [700, 741],
+            textStyle: 'background: #aaf',
+            labels: [
+              {
+                labelStyle: 'background: #ddf',
+                labelText: 'DATE',
+              }
+            ]
+          }
+        ],
+      },
+      {
+        "input": "Prospect 0:00 Hello. Agent 0:01 Hi, Kiara. This is Almer with Acme. How are you doing? Prospect 0:05 You're doing good from there. I didn't get it. Agent 0:09 From Acme. We're a carrot platform I just was following up. It looks like you downloaded our Thank God. Prospect 0:15 Yeah. Look at it. Luck. Agent 0:22 Yeah. Prospect 0:23 But I really didn't get a chance to look at it yet. Agent 0:27 Yeah, no problem at all I just wanted to call to see, you know, if this is something that you're interested in, we could set up like, you know, 10 minutes for me to answer any questions that you have. Or if you want, we can see if it makes sense to, you know, set up like an actual flower of the product. But I wanted to reach out first and see what would be appropriate. Prospect 0:49 Yeah, sure. I let me have a look into that. Actually, it sounded interesting to me, because we are also working on carrot soup itself here. ",
+        "highlight": [
+            {
+                "textRange": [
+                    36,
+                    41
+                ],
+                "textStyle": "background: #faa",
+                "labels": [
+                    {
+                        "labelText": "PERSON",
+                        "labelStyle": "background: #faa",
+                        "origValue": "Kiara"
+                    }
+                ]
+            },
+            {
+                "textRange": [
+                    51,
+                    56
+                ],
+                "textStyle": "background: #faa",
+                "labels": [
+                    {
+                        "labelText": "GPE",
+                        "labelStyle": "background: #faa",
+                        "origValue": "Almer"
+                    }
+                ]
+            },
+            {
+                "textRange": [
+                    62,
+                    66
+                ],
+                "textStyle": "background: #faa",
+                "labels": [
+                    {
+                        "labelText": "LOC",
+                        "labelStyle": "background: #faa",
+                        "origValue": "Acme"
+                    }
+                ]
+            },
+            {
+                "textRange": [
+                    164,
+                    168
+                ],
+                "textStyle": "background: #faa",
+                "labels": [
+                    {
+                        "labelText": "LOC",
+                        "labelStyle": "background: #faa",
+                        "origValue": "Acme"
+                    }
+                ]
+            },
+            {
+                "textRange": [
+                    539,
+                    549
+                ],
+                "textStyle": "background: #faa",
+                "labels": [
+                    {
+                        "labelText": "TIME",
+                        "labelStyle": "background: #faa",
+                        "origValue": "10 minutes"
+                    }
+                ]
+            },
+            {
+                "textRange": [
+                    726,
+                    731
+                ],
+                "textStyle": "background: #faa",
+                "labels": [
+                    {
+                        "labelText": "ORDINAL",
+                        "labelStyle": "background: #faa",
+                        "origValue": "first"
+                    }
+                ]
+            }
+        ]
+      },
+
+      {
+        "input": "Prospect 0:00\n Hello.\n\n Agent 0:01\n Hi, Kiara. This is Almer with Acme. How are you doing? \n\nProspect 0:05 \n You're doing good from there. I didn't get it. \n\nAgent 0:09\n From Acme. We're a carrot platform I just was following up. It looks like you downloaded our Thank God. \n\nProspect 0:15\n Yeah. Look at it. Luck. \n\n Agent 0:22\n Yeah. \n\nProspect 0:23\n But I really didn't get a chance to look at it yet. \n\nAgent 0:27\n Yeah, no problem at all I just wanted to call to see, you know, if this is something that you're interested in, we could set up like, you know, 10 minutes for me to answer any questions that you have. Or if you want, we can see if it makes sense to, you know, set up like an actual flower of the product. But I wanted to reach out first and see what would be appropriate. \n\nProspect 0:49\n Yeah, sure. I let me have a look into that. Actually, it sounded interesting to me, because we are also working on carrot soup itself here. ",
+        "highlight": [
+            {
+                "textRange": [
+                    40,
+                    45
+                ],
+                "textStyle": "background: #faa",
+                "labels": [
+                    {
+                        "labelText": "PERSON",
+                        "labelStyle": "background: #faa",
+                        "origValue": "Kiara"
+                    }
+                ]
+            },
+            {
+                "textRange": [
+                    55,
+                    60
+                ],
+                "textStyle": "background: #faa",
+                "labels": [
+                    {
+                        "labelText": "GPE",
+                        "labelStyle": "background: #faa",
+                        "origValue": "Almer"
+                    }
+                ]
+            },
+            {
+                "textRange": [
+                    66,
+                    70
+                ],
+                "textStyle": "background: #faa",
+                "labels": [
+                    {
+                        "labelText": "LOC",
+                        "labelStyle": "background: #faa",
+                        "origValue": "Acme"
+                    }
+                ]
+            },
+            {
+                "textRange": [
+                    175,
+                    179
+                ],
+                "textStyle": "background: #faa",
+                "labels": [
+                    {
+                        "labelText": "LOC",
+                        "labelStyle": "background: #faa",
+                        "origValue": "Acme"
+                    }
+                ]
+            },
+            {
+                "textRange": [
+                    563,
+                    573
+                ],
+                "textStyle": "background: #faa",
+                "labels": [
+                    {
+                        "labelText": "TIME",
+                        "labelStyle": "background: #faa",
+                        "origValue": "10 minutes"
+                    }
+                ]
+            },
+            {
+                "textRange": [
+                    750,
+                    755
+                ],
+                "textStyle": "background: #faa",
+                "labels": [
+                    {
+                        "labelText": "ORDINAL",
+                        "labelStyle": "background: #faa",
+                        "origValue": "first"
+                    }
+                ]
+            }
+        ]
+      }
+    ];
+
+    for (let test of tests) {
+      const container = document.createElement('div');
+      container.textContent = test.input;
+      container.className = 'demo-container';
+      document.body.appendChild(container);
+
+      const highlighter = new TextHighlight({ container });
+      highlighter.highlight(test.highlight);
+    }
+  </script>
+
+</body>
+</html>

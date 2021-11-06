@@ -105,9 +105,9 @@ export default class TextHighlight {
 
   _renderBlocks() {
     
-    let highlightText = "Today, I am sharing Microsoft’s 2021 Diversity and Inclusion report\n some new line";
+    let highlightText_1 = "Today, I am sharing Microsoft’s 2021 Diversity and Inclusion report\n some new line";
   
-    const blocks= [
+    const blocks_1= [
       {
         textRange: [20, 46],
         textStyle: 'background: #efe; position: relative; line-height: 32px;',
@@ -130,8 +130,8 @@ export default class TextHighlight {
       }     
     ];
 
-    // const blocks = this.blocks
-    // let highlightText = this.text;
+    const blocks = this.blocks
+    let highlightText = this.text;
 
     const sortedBlocks = this._createSatrtEndSortedBlocks(blocks)
     //const highlightText = this.text;

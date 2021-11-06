@@ -23,34 +23,15 @@ export default class TextHighlight {
     this.container.classList.add('text-higlight');
     this.text = this.container.textContent;
     this.blocks = [];
-    this._render();
+    this.container.textContent = ''; 
 
-    this.onResize = this.onResize.bind(this);
-    window.addEventListener('resize', this.onResize);
-  }
-
-  destroy() {
-    window.removeEventListener('resize', this.onResize);
-  }
-
-  onResize() {
-    this._render();
   }
 
   highlight(blocks) {
     this.blocks = blocks || [];
-    this._render();
-  }
-
-  _render() {
-    this._cleanup();
+    this.container.textContent = ''; //cleanup
     this._renderBlocks();
   }
-
-  _cleanup() {
-    this.container.textContent = '';
-  }
-
 
   _createStartEndSortedBlocks(){
      let satrtEndSortedBlocks = []
@@ -81,7 +62,6 @@ export default class TextHighlight {
   _renderBlocks() {
     let highlightText = this.text;
     const sortedBlocks = this._createStartEndSortedBlocks()
-    //const highlightText = this.text;
 
     //Start from the end of the text and go back, enable us to insert the labels without affecting the block offsets 
     for (let i = sortedBlocks.length-1; i >= 0; i--) {
@@ -91,19 +71,21 @@ export default class TextHighlight {
             span_tag = "</span>"
          }
          else{
-          let lablePosition = 'position: absolute; top: 17px; line-height: 1;' // an example of putting the lable in its new line
-          //lablePosition = ''
+          let lableStyleEx = 'position: absolute; top: 17px; line-height: 1;' // an example of putting the lable in its new line
+          let  blockStyleEx = 'line-height: 40px;'
+          //lableStyleEx = ''
+          //blockStyleEx = ''
           const randLableId= `${(Math.random())}`.replace('.','')
           const label = block.labels[0];
           span_tag = `<style>
           .label_${randLableId}::before {
-            content: "${label.labelText}";
+            content: "${label.labelText} ";
             ${label.labelStyle};
-            ${lablePosition};
+            ${lableStyleEx};
             width: max-content; max-width: 100px; overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
-          }</style> <span class='label_${randLableId}' style="position: relative; line-height: 40px; ${block.textStyle}">`
+          }</style> <span class='label_${randLableId}' style="position: relative; ${blockStyleEx}; ${block.textStyle}">`
          }
 
          //insert the (<span> or </span>) tag 

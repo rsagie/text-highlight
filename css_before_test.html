@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+span{
+	  _background-color:green;
+}
+.name::before {
+  content: "parent tag -";
+  background-color:red;
+}
+
+.name {
+  border-bottom: 1px solid red;
+}
+
+.live  {
+  border-bottom: 1px solid green;
+}
+.live::before {
+  content: " Child tag -";
+  background-color:green;
+}
+
+</style>
+</head>
+<body>
+
+<h1>Demo of the ::before selector</h1>
+
+<span class="name">
+My name is 
+	<span class="live">I live in Ducksburg</span>
+Donald</span>
+
+</body>
+</html>

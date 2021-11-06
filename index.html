@@ -17,7 +17,7 @@
 <body>
 
   <script type="module">
-    import TextHighlight from './text-highlight.js';
+    import TextHighlight from './text-highlight-before.js';
 
     const tests = [
       {
@@ -241,10 +241,10 @@
     ];
 
     for (let test of tests) {
-      const container = document.createElement('div');
-      container.textContent = test.input;
-      container.className = 'demo-container';
-      document.body.appendChild(container);
+         const container = document.createElement('div');
+         container.textContent = test.input;
+         container.className = 'demo-container';
+         document.body.appendChild(container);
 
       const highlighter = new TextHighlight({ container });
       highlighter.highlight(test.highlight);

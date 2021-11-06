@@ -100,7 +100,9 @@ export default class TextHighlight {
             content: "${label.labelText}";
             ${label.labelStyle};
             ${lablePosition};
-            width: max-content;
+            width: max-content; max-width: 100px; overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
           }</style> <span class='label_${randLableId}' style="position: relative; line-height: 40px; ${block.textStyle}">`
          }
 

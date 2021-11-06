@@ -22,7 +22,6 @@ export default class TextHighlight {
 
     this.container.classList.add('text-higlight');
     this.text = this.container.textContent;
-    this.higlights = [];
     this.blocks = [];
     this._render();
 
@@ -50,13 +49,12 @@ export default class TextHighlight {
 
   _cleanup() {
     this.container.textContent = '';
-    this.higlights = [];
   }
 
 
-  _createSatrtEndSortedBlocks(blocks){
+  _createStartEndSortedBlocks(){
      let satrtEndSortedBlocks = []
-     blocks.forEach(element => {
+     this.blocks.forEach(element => {
       const [rangeStart, rangeEnd] = element.textRange;
       element.type = 'start'
       element.offset = rangeStart
@@ -81,42 +79,37 @@ export default class TextHighlight {
   }
 
   _renderBlocks() {
-    
-    const blocks = this.blocks
     let highlightText = this.text;
-
-    const sortedBlocks = this._createSatrtEndSortedBlocks(blocks)
+    const sortedBlocks = this._createStartEndSortedBlocks()
     //const highlightText = this.text;
+
+    //Start from the end of the text and go back, enable us to insert the labels without affecting the block offsets 
     for (let i = sortedBlocks.length-1; i >= 0; i--) {
          const block = sortedBlocks[i];
-         let tag = ''
-         let offset = 0;
+         let span_tag = ''
          if(block.type == 'end'){
-            tag = "</span>"
-            offset = block.offset 
+            span_tag = "</span>"
          }
          else{
-          offset = block.offset;
-          tag = `<style>
-          .name::before {
+          let lablePosition = 'position: absolute; top: 17px; line-height: 1;' // an example of putting the lable in its new line
+          //lablePosition = ''
+          const randLableId= `${(Math.random())}`.replace('.','')
+          const label = block.labels[0];
+          span_tag = `<style>
+          .label_${randLableId}::before {
+            content: "${label.labelText}";
+            ${label.labelStyle};
+            ${lablePosition};
             width: max-content;
-            position: absolute;
-            top: 17px;
-            line-height: 1;
-
-            content: "parent tag -";
-            background-color:red;
-          }</style> <span class='name' style="position: relative; line-height: 40px; ${block.textStyle}">`
+          }</style> <span class='label_${randLableId}' style="position: relative; line-height: 40px; ${block.textStyle}">`
          }
 
-         //insert the (open/end) tag 
-         highlightText = [highlightText.slice(0, offset), tag, highlightText.slice(offset)].join('');
-         //highlightText =highlightText.substring(0, offset) +tag + highlightText.substring(offset)
+         //insert the (<span> or </span>) tag 
+         highlightText =highlightText.substring(0, block.offset) +span_tag + highlightText.substring(block.offset)
          
     }
     const highlightTextNode = document.createElement('span');
     highlightTextNode.textContent = highlightText;
-    //this.container.appendChild(highlightTextNode);
     this.container.insertAdjacentHTML( 'beforeend', highlightText);
   }
 

@@ -77,39 +77,92 @@ export default class TextHighlight {
     }
   }
 
+  _createSatrtEndSortedBlocks(blocks){
+     let satrtEndSortedBlocks = []
+     blocks.forEach(element => {
+      const [rangeStart, rangeEnd] = element.textRange;
+      element.type = 'start'
+      element.offset = rangeStart
+      satrtEndSortedBlocks.push(element)
+      
+      // create 'new' element, for the 'end' offset
+      const endElement = JSON.parse(JSON.stringify(element));
+      endElement.type = 'end'
+      endElement.offset = rangeEnd
+      satrtEndSortedBlocks.push(endElement)
+     });
+
+     satrtEndSortedBlocks.sort(function(a, b) {
+      var keyA = new Date(a.offset),
+        keyB = new Date(b.offset);
+      if (keyA < keyB) return -1;
+      if (keyA > keyB) return 1;
+      return 0;
+    })
+
+    return satrtEndSortedBlocks;
+  }
+
   _renderBlocks() {
-    const highlightText = `
-    <style>
-    span{white-space: normal;
-        _background-color:green;
-    }
-    .name::before {
-      content: "parent tag -";
-      background-color:red;
-    }
     
-    .name {
-      border-bottom: 1px solid red;
+    let highlightText = "Today, I am sharing Microsoft’s 2021 Diversity and Inclusion report\n some new line";
+  
+    const blocks= [
+      {
+        textRange: [20, 46],
+        textStyle: 'background: #efe; position: relative; line-height: 32px;',
+        labels: [
+          {
+            labelStyle: 'background: #efe',
+            labelText: 'Main article title',
+          }
+        ]
+      },
+      {
+        textRange: [32, 36],
+        textStyle: 'background: #faa',
+        labels: [
+          {
+            labelStyle: 'background: #fdd',
+            labelText: 'DATE',
+          }
+        ]
+      }     
+    ];
+
+    // const blocks = this.blocks
+    // let highlightText = this.text;
+
+    const sortedBlocks = this._createSatrtEndSortedBlocks(blocks)
+    //const highlightText = this.text;
+    for (let i = sortedBlocks.length-1; i >= 0; i--) {
+         const block = sortedBlocks[i];
+         let tag = ''
+         let offset = 0;
+         if(block.type == 'end'){
+            tag = "</span>"
+            offset = block.offset 
+         }
+         else{
+          offset = block.offset;
+          tag = `<style>
+          .name::before {
+            _position: absolute;
+            _top: 17px;
+            _line-height: 1;
+
+            content: "parent tag -";
+            background-color:red;
+          }</style> <span class='name' style="${block.textStyle}">`
+         }
+
+         //insert the (open/end) tag 
+         highlightText = [highlightText.slice(0, offset), tag, highlightText.slice(offset)].join('');
+         //highlightText =highlightText.substring(0, offset) +tag + highlightText.substring(offset)
+         
     }
-    
-    .live  {
-      border-bottom: 1px solid green;
-    }
-    .live::before {
-      content: " Child tag -";
-      background-color:green;
-    }
-    
-    </style>
-    </head>
-    <body>
-    
-    <h1>Demo of the ::before selector</h1>
-    
-    <span class="name">
-    My name is 
-      <span class="live">I live in Ducksburg</span>
-    Donald</span>`
+
+
     // for (let i = 0; i < this.blocks.length; i++) {
     //   const [rangeStart, rangeEnd] = this.blocks[i].textRange;
     //   const matchingWordNodes = [];
